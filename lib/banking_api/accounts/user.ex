@@ -1,6 +1,7 @@
 defmodule BankingApi.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
+  import Bcrypt
 
   @required_params [:cpf, :email, :name, :password]
   @regex_email ~r/^(\S+)@((?:(?:(?!-)[a-zA-Z0-9-]{1,62}[a-zA-Z0-9])\.)+[a-zA-Z0-9]{2,12})$/
@@ -31,6 +32,13 @@ defmodule BankingApi.Accounts.User do
     |> validate_format(:password, ~r/[0-9]+/, message: "Password must contain a number")
     |> validate_format(:password, ~r/[A-Z]+/, message: "Password must contain an upper-case letter")
     |> validate_format(:password, ~r/[a-z]+/, message: "Password must contain a lower-case letter")
-    |> validate_format(:password, ~r/[#\!\?&@\$%^&*\(\)]+/, message: "Password must contain a symbol")
+    |> validate_format(:password, ~r/[_#\!\?&@\$%^&*\(\)]+/, message: "Password must contain a symbol")
+    |> put_pass_hash()
   end
+
+  defp put_pass_hash(%Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset) do
+    change(changeset, add_hash(password))
+  end
+
+  defp put_pass_hash(changeset), do: changeset
 end
