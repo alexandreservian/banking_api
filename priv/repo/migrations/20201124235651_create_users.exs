@@ -7,7 +7,6 @@ defmodule BankingApi.Repo.Migrations.CreateUsers do
       add :email, :string
       add :password_hash, :string
       add :cpf, :string
-      add :account_number, :integer
       add :balance, :integer
 
       timestamps()

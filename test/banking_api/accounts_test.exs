@@ -6,9 +6,9 @@ defmodule BankingApi.AccountsTest do
   describe "users" do
     alias BankingApi.Accounts.User
 
-    @valid_attrs %{account_number: 42, balance: 42, cpf: "some cpf", email: "some email", name: "some name", password_hash: "some password_hash"}
-    @update_attrs %{account_number: 43, balance: 43, cpf: "some updated cpf", email: "some updated email", name: "some updated name", password_hash: "some updated password_hash"}
-    @invalid_attrs %{account_number: nil, balance: nil, cpf: nil, email: nil, name: nil, password_hash: nil}
+    @valid_attrs %{ balance: 42, cpf: "some cpf", email: "some email", name: "some name", password_hash: "some password_hash"}
+    @update_attrs %{ balance: 43, cpf: "some updated cpf", email: "some updated email", name: "some updated name", password_hash: "some updated password_hash"}
+    @invalid_attrs %{ balance: nil, cpf: nil, email: nil, name: nil, password_hash: nil}
 
     def user_fixture(attrs \\ %{}) do
       {:ok, user} =
@@ -31,7 +31,6 @@ defmodule BankingApi.AccountsTest do
 
     test "create_user/1 with valid data creates a user" do
       assert {:ok, %User{} = user} = Accounts.create_user(@valid_attrs)
-      assert user.account_number == 42
       assert user.balance == 42
       assert user.cpf == "some cpf"
       assert user.email == "some email"
@@ -46,7 +45,6 @@ defmodule BankingApi.AccountsTest do
     test "update_user/2 with valid data updates the user" do
       user = user_fixture()
       assert {:ok, %User{} = user} = Accounts.update_user(user, @update_attrs)
-      assert user.account_number == 43
       assert user.balance == 43
       assert user.cpf == "some updated cpf"
       assert user.email == "some updated email"

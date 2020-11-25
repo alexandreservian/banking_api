@@ -5,7 +5,6 @@ defmodule BankingApiWeb.UserControllerTest do
   alias BankingApi.Accounts.User
 
   @create_attrs %{
-    account_number: 42,
     balance: 42,
     cpf: "some cpf",
     email: "some email",
@@ -13,14 +12,13 @@ defmodule BankingApiWeb.UserControllerTest do
     password_hash: "some password_hash"
   }
   @update_attrs %{
-    account_number: 43,
     balance: 43,
     cpf: "some updated cpf",
     email: "some updated email",
     name: "some updated name",
     password_hash: "some updated password_hash"
   }
-  @invalid_attrs %{account_number: nil, balance: nil, cpf: nil, email: nil, name: nil, password_hash: nil}
+  @invalid_attrs %{balance: nil, cpf: nil, email: nil, name: nil, password_hash: nil}
 
   def fixture(:user) do
     {:ok, user} = Accounts.create_user(@create_attrs)
@@ -47,7 +45,6 @@ defmodule BankingApiWeb.UserControllerTest do
 
       assert %{
                "id" => id,
-               "account_number" => 42,
                "balance" => 42,
                "cpf" => "some cpf",
                "email" => "some email",
@@ -73,7 +70,6 @@ defmodule BankingApiWeb.UserControllerTest do
 
       assert %{
                "id" => id,
-               "account_number" => 43,
                "balance" => 43,
                "cpf" => "some updated cpf",
                "email" => "some updated email",

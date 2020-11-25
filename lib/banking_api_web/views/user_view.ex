@@ -16,7 +16,6 @@ defmodule BankingApiWeb.UserView do
       email: user.email,
       password_hash: user.password_hash,
       cpf: user.cpf,
-      account_number: user.account_number,
       balance: user.balance}
   end
 end

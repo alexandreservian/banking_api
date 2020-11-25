@@ -8,7 +8,6 @@ defmodule BankingApi.Accounts.User do
   @regex_cpf ~r/[0-9]{11}/
 
   schema "users" do
-    field :account_number, :integer
     field :balance, :integer, default: 100_000
     field :cpf, :string
     field :email, :string
