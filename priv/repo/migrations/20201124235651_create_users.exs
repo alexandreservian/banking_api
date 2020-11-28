@@ -15,6 +15,5 @@ defmodule BankingApi.Repo.Migrations.CreateUsers do
     create unique_index(:users, [:email])
 
     create unique_index(:users, [:cpf])
-
   end
 end

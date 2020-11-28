@@ -6,9 +6,21 @@ defmodule BankingApi.AccountsTest do
   describe "users" do
     alias BankingApi.Accounts.User
 
-    @valid_attrs %{ balance: 42, cpf: "some cpf", email: "some email", name: "some name", password_hash: "some password_hash"}
-    @update_attrs %{ balance: 43, cpf: "some updated cpf", email: "some updated email", name: "some updated name", password_hash: "some updated password_hash"}
-    @invalid_attrs %{ balance: nil, cpf: nil, email: nil, name: nil, password_hash: nil}
+    @valid_attrs %{
+      balance: 42,
+      cpf: "some cpf",
+      email: "some email",
+      name: "some name",
+      password_hash: "some password_hash"
+    }
+    @update_attrs %{
+      balance: 43,
+      cpf: "some updated cpf",
+      email: "some updated email",
+      name: "some updated name",
+      password_hash: "some updated password_hash"
+    }
+    @invalid_attrs %{balance: nil, cpf: nil, email: nil, name: nil, password_hash: nil}
 
     def user_fixture(attrs \\ %{}) do
       {:ok, user} =
