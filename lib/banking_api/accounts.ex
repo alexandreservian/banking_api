@@ -5,8 +5,53 @@ defmodule BankingApi.Accounts do
 
   import Ecto.Query, warn: false
   alias BankingApi.Repo
-
   alias BankingApi.Accounts.User
+
+  @doc """
+  Cria um usuário.
+
+  ## Parameters
+
+    - params: Map contendo os dados inicias do usuário. Examplo: %{name: "Alexandre Servian", email: "alexandreservian@gmail.com", cpf: "01122233304", password: "Cc5_555"}
+
+  ## Examples
+
+      iex> params = %{name: "Alexandre Servian", email: "alexandreservian@gmail.com", cpf: "01122233304", password: "Cc5_555"}
+      iex> create_user(params)
+      {:ok,
+        %BankingApi.Accounts.User{
+        __meta__: #Ecto.Schema.Metadata<:loaded, "users">,
+        balance: 100000,
+        cpf: "01122233304",
+        email: "alexandreservian@gmail.com",
+        id: 1,
+        inserted_at: ~N[2020-11-29 00:16:13],
+        name: "Alexandre Servian",
+        password: "Cc5_555",
+        password_hash: "$2b$12$N8a3OTw..uHBO9u6haxT.edb5Y0nRBrxq4Vyrg4psSnMy9eRzCmvu",
+        updated_at: ~N[2020-11-29 00:16:13]
+      }}
+
+      iex> create_user(%{})
+      {:error,
+        #Ecto.Changeset<
+          action: :insert,
+          changes: %{},
+          errors: [
+            cpf: {"can't be blank", [validation: :required]},
+            email: {"can't be blank", [validation: :required]},
+            name: {"can't be blank", [validation: :required]},
+            password: {"can't be blank", [validation: :required]}
+          ],
+          data: #BankingApi.Accounts.User<>,
+          valid?: false
+        >
+      }
+
+  """
+  @spec create_user(%{cpf: binary, email: binary, name: binary, password: binary}) ::
+          {:error, Ecto.Changeset.t()} | {:ok, %{optional(atom) => any}}
+  defdelegate create_user(params), to: User.Create, as: :call
 
   @doc """
   Returns the list of users.
@@ -36,24 +81,6 @@ defmodule BankingApi.Accounts do
 
   """
   def get_user!(id), do: Repo.get!(User, id)
-
-  @doc """
-  Creates a user.
-
-  ## Examples
-
-      iex> create_user(%{field: value})
-      {:ok, %User{}}
-
-      iex> create_user(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_user(attrs \\ %{}) do
-    %User{}
-    |> User.changeset(attrs)
-    |> Repo.insert()
-  end
 
   @doc """
   Updates a user.
