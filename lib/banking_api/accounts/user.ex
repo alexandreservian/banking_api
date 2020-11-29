@@ -21,8 +21,8 @@ defmodule BankingApi.Accounts.User do
   end
 
   @doc false
-  def changeset(user, attrs) do
-    user
+  def changeset(attrs) do
+    %__MODULE__{}
     |> cast(attrs, @required_params)
     |> validate_required(@required_params)
     |> validate_format(:cpf, @regex_cpf,
