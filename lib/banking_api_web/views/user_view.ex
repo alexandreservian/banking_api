@@ -6,6 +6,10 @@ defmodule BankingApiWeb.UserView do
     %{data: render_many(users, UserView, "user.json")}
   end
 
+  def render("create.json", %{user: user}) do
+    %{message: "User created!", data: render_one(user, UserView, "user.json")}
+  end
+
   def render("show.json", %{user: user}) do
     %{data: render_one(user, UserView, "user.json")}
   end
@@ -15,7 +19,6 @@ defmodule BankingApiWeb.UserView do
       id: user.id,
       name: user.name,
       email: user.email,
-      password_hash: user.password_hash,
       cpf: user.cpf,
       balance: user.balance
     }
