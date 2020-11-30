@@ -7,16 +7,18 @@ defmodule BankingApiWeb.UserController do
   action_fallback BankingApiWeb.FallbackController
 
   def index(conn, _params) do
-    users = Accounts.list_users()
-    render(conn, "index.json", users: users)
+    with {:ok, users} <- Accounts.list_users() do
+      conn
+      |> put_status(:ok)
+      |> render("index.json", users: users)
+    end
   end
 
-  def create(conn, %{"user" => user_params}) do
-    with {:ok, %User{} = user} <- Accounts.create_user(user_params) do
+  def create(conn, params) do
+    with {:ok, user} <- Accounts.create_user(params) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", Routes.user_path(conn, :show, user))
-      |> render("show.json", user: user)
+      |> render("create.json", user: user)
     end
   end
 
