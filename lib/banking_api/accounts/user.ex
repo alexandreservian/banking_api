@@ -20,7 +20,6 @@ defmodule BankingApi.Accounts.User do
     timestamps()
   end
 
-  @doc false
   def changeset(attrs) do
     %__MODULE__{}
     |> cast(attrs, @required_params)
@@ -31,6 +30,22 @@ defmodule BankingApi.Accounts.User do
     |> unique_constraint(:cpf)
     |> validate_format(:email, @regex_email)
     |> unique_constraint(:email)
+    |> validate_password()
+    |> put_pass_hash()
+  end
+
+  def changeset(user, attrs) do
+    user
+    |> cast(attrs, [:name, :password])
+    |> validate_required([:name])
+    |> validate_password()
+    |> put_pass_hash()
+  end
+
+  defp validate_password(
+         %Ecto.Changeset{valid?: true, changes: %{password: _password}} = changeset
+       ) do
+    changeset
     |> validate_length(:password, min: 6)
     |> validate_format(:password, ~r/[0-9]+/, message: "Password must contain a number")
     |> validate_format(:password, ~r/[A-Z]+/,
@@ -40,8 +55,9 @@ defmodule BankingApi.Accounts.User do
     |> validate_format(:password, ~r/[_#\!\?&@\$%^&*\(\)]+/,
       message: "Password must contain a symbol"
     )
-    |> put_pass_hash()
   end
+
+  defp validate_password(changeset), do: changeset
 
   defp put_pass_hash(%Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset) do
     change(changeset, add_hash(password))
