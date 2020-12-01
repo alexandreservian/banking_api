@@ -7,7 +7,7 @@ defmodule BankingApi.Accounts.User do
 
   @required_params [:cpf, :email, :name, :password]
   @regex_email ~r/^(\S+)@((?:(?:(?!-)[a-zA-Z0-9-]{1,62}[a-zA-Z0-9])\.)+[a-zA-Z0-9]{2,12})$/
-  @regex_cpf ~r/[0-9]{11}/
+  @regex_cpf ~r/^[0-9]{11}$/
 
   schema "users" do
     field :balance, :integer, default: 100_000
