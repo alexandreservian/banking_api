@@ -6,7 +6,7 @@ defmodule BankingApi.Accounts.User.Update do
       Representa os dados que podem ser modificados do usuário
   """
   @type params :: %{
-          :id => integer(),
+          :id => integer() | String.t(),
           optional(:name) => String.t(),
           optional(:password) => String.t()
         }

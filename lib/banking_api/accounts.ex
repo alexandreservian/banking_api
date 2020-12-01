@@ -107,11 +107,11 @@ defmodule BankingApi.Accounts do
       iex> get_user!(15)
       {:error, "User not found!"}
 
-      iex> get_user!("15")
+      iex> get_user!("E28A0786-6E6E-4B9F-9ED3-3088266E0089")
       {:error, "Invalid ID format!"}
 
   """
-  @spec get_user!(integer()) :: {:ok, %User{}} | {:error, String.t()}
+  @spec get_user!(integer() | String.t()) :: {:ok, %User{}} | {:error, String.t()}
   defdelegate get_user!(id), to: User.Get, as: :call
 
   @doc """
@@ -170,14 +170,18 @@ defmodule BankingApi.Accounts do
         >
       }
 
-      iex> update_user(%{cpf: 15, name: "Servian"})
+      iex> update_user(%{id: 15, name: "Servian"})
       {:error, "User not found!"}
 
-      iex> update_user(%{cpf: "15", name: "Servian"})
-      {:error, "Invalid CPF format!"}
+      iex> update_user(%{id: "E28A0786-6E6E-4B9F-9ED3-3088266E0089", name: "Servian"})
+      {:error, "Invalid ID format!"}
 
   """
-  @spec update_user(%{:id => integer(), optional(:name) => binary, optional(:password) => binary}) ::
+  @spec update_user(%{
+          :id => integer() | String.t(),
+          optional(:name) => binary,
+          optional(:password) => binary
+        }) ::
           {:ok, %User{}} | {:error, Ecto.Changeset.t()} | {:error, String.t()}
   defdelegate update_user(params), to: User.Update, as: :call
 
@@ -210,11 +214,11 @@ defmodule BankingApi.Accounts do
       iex> delete_user(15)
       {:error, "User not found!"}
 
-      iex> delete_user("15")
+      iex> delete_user("E28A0786-6E6E-4B9F-9ED3-3088266E0089")
       {:error, "Invalid ID format!"}
 
   """
-  @spec delete_user(integer()) ::
+  @spec delete_user(integer() | String.t()) ::
           {:ok, %User{}} | {:error, String.t()}
   defdelegate delete_user(id), to: User.Delete, as: :call
 end
