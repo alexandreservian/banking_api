@@ -79,15 +79,15 @@ defmodule BankingApi.Accounts do
   defdelegate list_users(), to: User.List, as: :call
 
   @doc """
-  Returna somente um usuário a partir de um cpf existente e válido.
+  get_user  Returna somente um usuário a partir de um id.
 
   ## Parameters
 
-      - cpf: String de um cpf válido. Ex: "01122233304"
+      - id: Integer
 
   ## Examples
 
-      iex> get_user!("01122233304")
+      iex> get_user!(1)
       {
         :ok,
         %BankingApi.Accounts.User{
@@ -104,29 +104,26 @@ defmodule BankingApi.Accounts do
         }
       }
 
-      iex> get_user!("13122233305")
+      iex> get_user!(15)
       {:error, "User not found!"}
 
-      iex> get_user!(01122233304)
-      {:error, "Invalid CPF format!"}
-
-      iex> get_user!("011.222.333-04")
-      {:error, "Invalid CPF format!"}
+      iex> get_user!("15")
+      {:error, "Invalid ID format!"}
 
   """
-  @spec get_user!(String.t()) :: {:ok, %User{}} | {:error, String.t()}
-  defdelegate get_user!(cpf), to: User.Get, as: :call
+  @spec get_user!(integer()) :: {:ok, %User{}} | {:error, String.t()}
+  defdelegate get_user!(id), to: User.Get, as: :call
 
   @doc """
   Atualiza um usuário. O usuário só pode atualizar seu nome e seu password se necessário.
 
   ## Parameters
 
-    - params: Map contendo os dados inicias do usuário. Examplo: %{cpf: "01122233304", name: "Servian", password: "Cc5_555"}
+    - params: Map contendo os dados inicias do usuário. Examplo: %{id: 1, name: "Servian", password: "Cc5_555"}
 
   ## Examples
 
-      iex> update_user(%{cpf: "01122233304", name: "Servian"})
+      iex> update_user(%{id: 1, name: "Servian"})
       {
         :ok,
         %BankingApi.Accounts.User{
@@ -143,7 +140,24 @@ defmodule BankingApi.Accounts do
         }
       }
 
-      iex> update_user(%{cpf: "01122233304", name: ""})
+      iex> update_user(%{id: 1, password: "ScR55@55"})
+      {
+        :ok,
+        %BankingApi.Accounts.User{
+          __meta__: #Ecto.Schema.Metadata<:loaded, "users">,
+          balance: 100000,
+          cpf: "01122233304",
+          email: "alexandreservian@gmail.com",
+          id: 1,
+          inserted_at: ~N[2020-11-30 00:25:30],
+          name: "Servian",
+          password: "ScR55@55",
+          password_hash: "$2b$12$bUu037dzZ3XHZfyn5vzqEOr//sfZsmRI.Te5vGSSmsVOrSE2.Fvl2"",
+          updated_at: ~N[2020-11-30 23:40:15]
+        }
+      }
+
+      iex> update_user(%{id: 2, name: ""})
       {:error,
         #Ecto.Changeset<
           action: :update,
@@ -156,17 +170,14 @@ defmodule BankingApi.Accounts do
         >
       }
 
-      iex> update_user(%{cpf: "13122233305", name: "Servian"})
+      iex> update_user(%{cpf: 15, name: "Servian"})
       {:error, "User not found!"}
 
-      iex> update_user(%{cpf: 01122233304, name: "Servian"})
-      {:error, "Invalid CPF format!"}
-
-      iex> update_user(%{cpf: "011.222.333-04", name: "Servian"})
+      iex> update_user(%{cpf: "15", name: "Servian"})
       {:error, "Invalid CPF format!"}
 
   """
-  @spec update_user(%{:cpf => binary, optional(:name) => binary, optional(:password) => binary}) ::
+  @spec update_user(%{:id => integer(), optional(:name) => binary, optional(:password) => binary}) ::
           {:ok, %User{}} | {:error, Ecto.Changeset.t()} | {:error, String.t()}
   defdelegate update_user(params), to: User.Update, as: :call
 
@@ -175,11 +186,11 @@ defmodule BankingApi.Accounts do
 
   ## Parameters
 
-    - cpf: String de um cpf válido. Ex: "01122233304"
+    - id: Integer
 
   ## Examples
 
-      iex> delete_user("01122233304")
+      iex> delete_user(2)
       {
         :ok,
         %BankingApi.Accounts.User{
@@ -196,20 +207,14 @@ defmodule BankingApi.Accounts do
         }
       }
 
-      iex> delete_user("01122233304")
+      iex> delete_user(15)
       {:error, "User not found!"}
 
-      iex> delete_user("13122233305")
-      {:error, "User not found!"}
-
-      iex> delete_user(01122233304)
-      {:error, "Invalid CPF format!"}
-
-      iex> delete_user("011.222.333-04")
-      {:error, "Invalid CPF format!"}
+      iex> delete_user("15")
+      {:error, "Invalid ID format!"}
 
   """
-  @spec delete_user(String.t()) ::
+  @spec delete_user(integer()) ::
           {:ok, %User{}} | {:error, String.t()}
-  defdelegate delete_user(cpf), to: User.Delete, as: :call
+  defdelegate delete_user(id), to: User.Delete, as: :call
 end

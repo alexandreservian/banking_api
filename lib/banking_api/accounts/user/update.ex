@@ -6,15 +6,15 @@ defmodule BankingApi.Accounts.User.Update do
       Representa os dados que podem ser modificados do usuário
   """
   @type params :: %{
-          :cpf => String.t(),
+          :id => integer(),
           optional(:name) => String.t(),
           optional(:password) => String.t()
         }
 
   @spec call(params) ::
           {:ok, Ecto.Schema.t()} | {:error, Ecto.Changeset.t()} | {:error, String.t()}
-  def call(%{cpf: cpf} = params) do
-    case Accounts.get_user!(cpf) do
+  def call(%{id: id} = params) do
+    case Accounts.get_user!(id) do
       {:ok, user} -> update(user, params)
       {:error, _reason} = error -> error
     end

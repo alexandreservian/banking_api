@@ -2,10 +2,10 @@ defmodule BankingApi.Accounts.User.Delete do
   alias BankingApi.{Repo, Accounts}
   @moduledoc false
 
-  @spec call(String.t()) ::
+  @spec call(integer()) ::
           {:ok, Ecto.Schema.t()} | {:error, String.t()}
-  def call(cpf) do
-    case Accounts.get_user!(cpf) do
+  def call(id) do
+    case Accounts.get_user!(id) do
       {:ok, user} -> delete(user)
       {:error, _reason} = error -> error
     end

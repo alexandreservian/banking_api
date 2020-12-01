@@ -1,20 +1,14 @@
 defmodule BankingApi.Accounts.User.Get do
   alias BankingApi.{Repo, Accounts.User}
   @moduledoc false
-  @regex_cpf ~r/[0-9]{11}/
 
-  @spec call(String.t()) :: {:ok, Ecto.Schema.t()} | {:error, String.t()}
-  def call(cpf) when is_binary(cpf) do
-    case String.match?(cpf, @regex_cpf) do
-      true -> get(cpf)
-      false -> {:error, "Invalid CPF format!"}
-    end
-  end
+  @spec call(integer()) :: {:ok, Ecto.Schema.t()} | {:error, String.t()}
+  def call(id) when is_integer(id), do: get(id)
 
-  def call(_), do: {:error, "Invalid CPF format!"}
+  def call(_), do: {:error, "Invalid ID format!"}
 
-  defp get(cpf) do
-    Repo.get_by(User, cpf: cpf)
+  defp get(id) do
+    Repo.get(User, id)
     |> create_response()
   end
 
