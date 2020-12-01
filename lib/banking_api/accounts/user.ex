@@ -42,9 +42,7 @@ defmodule BankingApi.Accounts.User do
     |> put_pass_hash()
   end
 
-  defp validate_password(
-         %Ecto.Changeset{valid?: true, changes: %{password: _password}} = changeset
-       ) do
+  defp validate_password(%Ecto.Changeset{changes: %{password: _password}} = changeset) do
     changeset
     |> validate_length(:password, min: 6)
     |> validate_format(:password, ~r/[0-9]+/, message: "Password must contain a number")
