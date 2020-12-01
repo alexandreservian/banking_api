@@ -1,8 +1,7 @@
 defmodule BankingApiWeb.UserController do
   use BankingApiWeb, :controller
 
-  alias BankingApi.Accounts
-  alias BankingApi.Accounts.User
+  alias BankingApi.{Accounts, Accounts.User}
 
   action_fallback BankingApiWeb.FallbackController
 
@@ -23,8 +22,11 @@ defmodule BankingApiWeb.UserController do
   end
 
   def show(conn, %{"id" => id}) do
-    user = Accounts.get_user!(id)
-    render(conn, "show.json", user: user)
+    with {:ok, user} <- Accounts.get_user!(id) do
+      conn
+      |> put_status(:ok)
+      |> render("show.json", user: user)
+    end
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do
